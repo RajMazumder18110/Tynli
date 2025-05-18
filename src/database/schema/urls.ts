@@ -12,13 +12,14 @@ export const urls = pgTable(
   "urls",
   {
     /// Core
-    id: uuid().primaryKey().notNull(),
+    id: uuid().defaultRandom().primaryKey().notNull(),
     longUrl: text().notNull(),
     shortUrl: varchar({ length: 20 }).notNull().unique(),
 
     /// timestamps
     createdAt: timestamp().defaultNow().notNull(),
     updatedAt: timestamp()
+      .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
   },
