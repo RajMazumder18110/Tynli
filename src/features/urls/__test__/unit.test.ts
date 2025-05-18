@@ -1,11 +1,37 @@
 /** @notice Library imports */
-import { describe, it, expect, spyOn, mock, beforeEach } from "bun:test";
+import {
+  describe,
+  it,
+  expect,
+  spyOn,
+  mock,
+  beforeEach,
+  beforeAll,
+  afterAll,
+} from "bun:test";
+import { nanoid } from "nanoid";
 /// Local imports
 import { UrlsRepo } from "@/features/urls/urls.repo";
 import { UrlService } from "@/features/urls/urls.service";
 import type { NewShortUrl, ShortUrl } from "@/database/schema";
 
 describe("Urls services", () => {
+  beforeAll(() => {
+    mock.module("nanoid", () => {
+      return {
+        nanoid: (length: number) => "123456",
+      };
+    });
+  });
+
+  afterAll(() => {
+    mock.module("nanoid", () => {
+      return {
+        nanoid,
+      };
+    });
+  });
+
   beforeEach(() => {
     mock.restore();
   });
@@ -16,11 +42,7 @@ describe("Urls services", () => {
       shortUrl: "123456",
       longUrl: "https://google.com",
     };
-    mock.module("nanoid", () => {
-      return {
-        nanoid: (length: number) => payload.shortUrl,
-      };
-    });
+
     const mockInsert = spyOn(UrlsRepo, "insert").mockImplementationOnce(
       async () => {}
     );
