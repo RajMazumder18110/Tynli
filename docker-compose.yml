@@ -1,0 +1,11 @@
+services:
+  database:
+    restart: always
+    image: postgres:alpine
+    container_name: database
+    environment:
+      - POSTGRES_DB=tynli
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - 5432:5432
